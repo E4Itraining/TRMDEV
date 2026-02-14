@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  trm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trm-training
+    ports:
+      - "8050:8050"      # Dash live graph dashboard
+    volumes:
+      - ./checkpoints:/app/checkpoints    # persist checkpoints
+      - ./configs:/app/configs             # override config at runtime
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: "no"
+    # Override config via: docker compose run trm --config configs/custom.yaml
+
+  trm-gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trm-training-gpu
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./checkpoints:/app/checkpoints
+      - ./configs:/app/configs
+    environment:
+      - PYTHONUNBUFFERED=1
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    profiles:
+      - gpu
+    restart: "no"
