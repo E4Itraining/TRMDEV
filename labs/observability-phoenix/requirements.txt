@@ -1,0 +1,9 @@
+# Phoenix by Arize — observability lab
+arize-phoenix>=4.0.0
+opentelemetry-api>=1.20.0
+opentelemetry-sdk>=1.20.0
+opentelemetry-exporter-otlp>=1.20.0
+
+# Core TRM dependencies (also in root requirements.txt)
+torch>=2.1.0
+pyyaml>=6.0
